@@ -9,61 +9,34 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --cream: #faf7f2;
-    --warm-white: #fff9f4;
-    --ink: #1a1208;
-    --ink-soft: #4a3f2f;
-    --ink-muted: #8c7b65;
-    --accent: #c84b2f;
-    --accent-soft: #f0ddd7;
-    --gold: #c4922a;
-    --gold-soft: #fdf0d5;
-    --sage: #5a7a5c;
-    --sage-soft: #e8f0e8;
-    --border: rgba(26,18,8,0.1);
-    --border-mid: rgba(26,18,8,0.18);
-    --radius: 16px;
-    --radius-sm: 8px;
+    --cream: #faf7f2; --warm-white: #fff9f4; --ink: #1a1208; --ink-soft: #4a3f2f;
+    --ink-muted: #8c7b65; --accent: #c84b2f; --accent-soft: #f0ddd7;
+    --gold: #c4922a; --gold-soft: #fdf0d5; --sage: #5a7a5c; --sage-soft: #e8f0e8;
+    --border: rgba(26,18,8,0.1); --border-mid: rgba(26,18,8,0.18);
+    --radius: 16px; --radius-sm: 8px;
   }
-  html { font-size: 16px; }
   body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0; opacity: 0.5;
-  }
-  .page { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
-
-  /* header */
+  .page { max-width: 700px; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
   .header { text-align: center; padding: 2rem 0 1.75rem; }
   .header-eyebrow { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.75rem; }
-  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 6vw, 2.8rem); font-weight: 400; line-height: 1.15; color: var(--ink); }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 6vw, 2.8rem); font-weight: 400; line-height: 1.15; }
   .header h1 em { font-style: italic; color: var(--accent); }
   .header-sub { font-size: 13px; color: var(--ink-muted); margin-top: 0.625rem; line-height: 1.6; }
-
-  /* weather */
-  .weather-bar { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1.125rem; display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; font-size: 13px; color: var(--ink-soft); }
+  .weather-bar { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1.125rem; display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; font-size: 13px; }
   .weather-icon { font-size: 18px; }
   .weather-text { flex: 1; }
   .weather-main { font-weight: 500; color: var(--ink); }
   .weather-detail { color: var(--ink-muted); font-size: 12px; }
   .weather-refresh { background: none; border: none; color: var(--ink-muted); cursor: pointer; font-size: 12px; padding: 4px 8px; border-radius: 6px; }
   .weather-refresh:hover { background: var(--border); }
-
-  /* form */
-  .form-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.375rem 1.375rem 1.25rem; margin-bottom: 1.25rem; }
+  .form-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.375rem; margin-bottom: 1.25rem; }
   .form-section { margin-bottom: 1.375rem; }
   .form-section:last-child { margin-bottom: 0; }
   .form-label { display: block; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.5rem; font-weight: 500; }
-
-  /* mood pills */
   .mood-grid { display: flex; flex-wrap: wrap; gap: 7px; }
   .mood-pill { padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border-mid); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px; }
   .mood-pill:hover { border-color: var(--accent); color: var(--accent); }
   .mood-pill.selected { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 500; }
-
-  /* budget */
   .budget-display { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.625rem; }
   .budget-amount { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--ink); }
   .budget-amount span { font-size: 0.9rem; color: var(--ink-muted); font-family: 'DM Sans', sans-serif; }
@@ -72,24 +45,16 @@
   input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); border: 3px solid var(--warm-white); box-shadow: 0 1px 4px rgba(200,75,47,0.3); cursor: pointer; }
   input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--accent); border: 3px solid var(--warm-white); cursor: pointer; }
   .range-labels { display: flex; justify-content: space-between; margin-top: 5px; font-size: 11px; color: var(--ink-muted); }
-
-  /* chips */
   .options-row { display: flex; gap: 8px; flex-wrap: wrap; }
   .option-chip { flex: 1; min-width: 100px; padding: 9px 12px; border: 1px solid var(--border-mid); border-radius: var(--radius-sm); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; text-align: center; }
   .option-chip:hover { border-color: var(--gold); color: var(--gold); }
   .option-chip.selected { background: var(--gold-soft); border-color: var(--gold); color: var(--ink); font-weight: 500; }
-
-  /* textarea */
   .context-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-mid); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 13px; background: white; color: var(--ink); resize: vertical; outline: none; line-height: 1.6; }
   .context-input:focus { border-color: var(--gold); }
-
-  /* generate btn */
-  .generate-btn { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: var(--radius); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; cursor: pointer; transition: all 0.2s; letter-spacing: 0.01em; }
+  .generate-btn { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: var(--radius); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; cursor: pointer; transition: all 0.2s; }
   .generate-btn:hover { background: #b03d24; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(200,75,47,0.25); }
   .generate-btn:active { transform: translateY(0); }
   .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
-
-  /* loading */
   .loading-state { text-align: center; padding: 3rem 1rem; display: none; }
   .loading-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 1rem; }
   .loading-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: bounce 1.2s ease-in-out infinite; }
@@ -98,30 +63,20 @@
   @keyframes bounce { 0%,80%,100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
   .loading-text { font-family: 'Playfair Display', serif; font-style: italic; color: var(--ink-muted); font-size: 1rem; }
   .loading-sub { font-size: 12px; color: var(--ink-muted); margin-top: 6px; }
-
-  /* results */
   .results-area { display: none; }
   .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
   .results-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--ink); }
-  .results-actions { display: flex; gap: 8px; align-items: center; }
-  .small-btn { background: none; border: 1px solid var(--border-mid); border-radius: 999px; padding: 4px 12px; font-size: 12px; color: var(--ink-soft); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; white-space: nowrap; }
+  .small-btn { background: none; border: 1px solid var(--border-mid); border-radius: 999px; padding: 4px 12px; font-size: 12px; color: var(--ink-soft); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
   .small-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .small-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-
-  /* toggle filter */
   .filter-bar { display: flex; gap: 6px; margin-bottom: 1.125rem; flex-wrap: wrap; }
   .filter-pill { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-mid); background: transparent; font-size: 12px; color: var(--ink-muted); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
   .filter-pill:hover { border-color: var(--ink-soft); color: var(--ink-soft); }
   .filter-pill.active { background: var(--ink); border-color: var(--ink); color: white; }
-
-  /* idea cards */
   .idea-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.375rem; margin-bottom: 0.875rem; transition: box-shadow 0.15s; }
   .idea-card:hover { box-shadow: 0 4px 20px rgba(26,18,8,0.06); }
   .idea-card.hidden { display: none; }
-
   .idea-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 0.5rem; }
   .idea-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
-
   .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0.625rem; align-items: center; }
   .badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
   .badge-event { background: #e8f0fe; color: #1a56a0; }
@@ -130,43 +85,29 @@
   .badge-low { background: var(--gold-soft); color: #7a5a10; }
   .badge-dog { background: var(--sage-soft); color: var(--sage); }
   .badge-tag { background: var(--cream); border: 1px solid var(--border); color: var(--ink-muted); }
-
   .idea-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 0.875rem; }
-
   .idea-details { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 0.75rem; }
   .detail-block { background: var(--cream); border-radius: var(--radius-sm); padding: 0.5rem 0.75rem; }
   .detail-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 2px; }
   .detail-value { font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
-
   .idea-footer { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px; padding-top: 0.75rem; border-top: 1px solid var(--border); }
   .idea-location { font-size: 12px; color: var(--ink-muted); display: flex; gap: 5px; align-items: flex-start; flex: 1; }
   .idea-link { font-size: 12px; color: var(--accent); text-decoration: none; white-space: nowrap; }
   .idea-link:hover { text-decoration: underline; }
-
-  /* error */
   .error-box { background: #fff0ee; border: 1px solid rgba(200,75,47,0.25); border-radius: var(--radius); padding: 1.125rem; font-size: 14px; color: var(--accent); display: none; line-height: 1.6; margin-top: 1rem; }
-
-  /* footer */
   .footer { text-align: center; padding: 2rem 0 0; font-size: 12px; color: var(--ink-muted); line-height: 1.8; }
   .footer a { color: var(--accent); text-decoration: none; }
-
-  @media (max-width: 480px) {
-    .idea-details { grid-template-columns: 1fr; }
-    .options-row { flex-direction: column; }
-    .option-chip { min-width: unset; }
-  }
+  @media (max-width: 480px) { .idea-details { grid-template-columns: 1fr; } .options-row { flex-direction: column; } .option-chip { min-width: unset; } }
 </style>
 </head>
 <body>
 <div class="page">
-
   <header class="header">
     <p class="header-eyebrow">Richmond, Virginia</p>
     <h1>our <em>date night</em><br>idea generator</h1>
-    <p class="header-sub">Real events + original ideas · tailored to today's weather, mood & budget</p>
+    <p class="header-sub">Real events + original ideas · tailored to today's weather, mood &amp; budget</p>
   </header>
 
-  <!-- Weather -->
   <div class="weather-bar" id="weatherBar">
     <span class="weather-icon" id="weatherIcon">🌤</span>
     <div class="weather-text">
@@ -176,20 +117,18 @@
     <button class="weather-refresh" onclick="fetchWeather()">↻ refresh</button>
   </div>
 
-  <!-- Form -->
   <div class="form-card">
     <div class="form-section">
       <label class="form-label">What's the mood today?</label>
       <div class="mood-grid" id="moodGrid">
-        <button class="mood-pill" data-mood="cozy & low-key" onclick="selectMood(this)">🕯 Cozy & low-key</button>
-        <button class="mood-pill" data-mood="adventurous & outdoorsy" onclick="selectMood(this)">🌿 Adventurous</button>
-        <button class="mood-pill" data-mood="creative & artsy" onclick="selectMood(this)">🎨 Creative</button>
-        <button class="mood-pill" data-mood="romantic & slow" onclick="selectMood(this)">✨ Romantic</button>
-        <button class="mood-pill" data-mood="playful & fun" onclick="selectMood(this)">🎲 Playful</button>
-        <button class="mood-pill" data-mood="surprise us — we're open to anything" onclick="selectMood(this)">🎁 Surprise us</button>
+        <button class="mood-pill" data-mood="cozy and low-key" onclick="selectMood(this)">🕯 Cozy &amp; low-key</button>
+        <button class="mood-pill" data-mood="adventurous and outdoorsy" onclick="selectMood(this)">🌿 Adventurous</button>
+        <button class="mood-pill" data-mood="creative and artsy" onclick="selectMood(this)">🎨 Creative</button>
+        <button class="mood-pill" data-mood="romantic and slow" onclick="selectMood(this)">✨ Romantic</button>
+        <button class="mood-pill" data-mood="playful and fun" onclick="selectMood(this)">🎲 Playful</button>
+        <button class="mood-pill" data-mood="surprise us with something unexpected" onclick="selectMood(this)">🎁 Surprise us</button>
       </div>
     </div>
-
     <div class="form-section">
       <label class="form-label">Budget for today</label>
       <div class="budget-display">
@@ -199,17 +138,15 @@
       <input type="range" min="0" max="60" value="25" step="5" id="budgetSlider" oninput="updateBudget(this)" />
       <div class="range-labels"><span>$0 free only</span><span>$60</span></div>
     </div>
-
     <div class="form-section">
       <label class="form-label">Time of day</label>
       <div class="options-row" id="timeGroup">
-        <button class="option-chip" data-val="morning (10am–1pm)" onclick="selectOption(this,'timeGroup')">Morning</button>
-        <button class="option-chip" data-val="afternoon (2pm–5pm)" onclick="selectOption(this,'timeGroup')">Afternoon</button>
-        <button class="option-chip selected" data-val="evening (6pm–9pm)" onclick="selectOption(this,'timeGroup')">Evening</button>
+        <button class="option-chip" data-val="morning (10am-1pm)" onclick="selectOption(this,'timeGroup')">Morning</button>
+        <button class="option-chip" data-val="afternoon (2pm-5pm)" onclick="selectOption(this,'timeGroup')">Afternoon</button>
+        <button class="option-chip selected" data-val="evening (6pm-9pm)" onclick="selectOption(this,'timeGroup')">Evening</button>
         <button class="option-chip" data-val="late night (9pm+)" onclick="selectOption(this,'timeGroup')">Late night</button>
       </div>
     </div>
-
     <div class="form-section">
       <label class="form-label">Bring the dog?</label>
       <div class="options-row" id="dogGroup">
@@ -217,40 +154,29 @@
         <button class="option-chip" data-val="no dog today" onclick="selectOption(this,'dogGroup')">Just us two</button>
       </div>
     </div>
-
     <div class="form-section">
       <label class="form-label">Anything on your mind? <span style="font-weight:300;text-transform:none;letter-spacing:0;">(optional)</span></label>
       <textarea id="extraContext" rows="2" class="context-input" placeholder="e.g. we want to stay close to Carytown, or we're craving something that feels like a restaurant night…"></textarea>
     </div>
   </div>
 
-  <button class="generate-btn" id="generateBtn" onclick="generateIdeas()">
-    plan our date night →
-  </button>
+  <button class="generate-btn" id="generateBtn" onclick="generateIdeas()">plan our date night →</button>
 
-  <!-- Loading -->
   <div class="loading-state" id="loadingState">
     <div class="loading-dots">
-      <div class="loading-dot"></div>
-      <div class="loading-dot"></div>
-      <div class="loading-dot"></div>
+      <div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div>
     </div>
     <p class="loading-text" id="loadingText">scanning Richmond for ideas…</p>
-    <p class="loading-sub" id="loadingSub">pulling together ideas just for you</p>
+    <p class="loading-sub">checking Reddit, Eventbrite, local news + more</p>
   </div>
 
-  <!-- Error -->
   <div class="error-box" id="errorBox"></div>
 
-  <!-- Results -->
   <div class="results-area" id="resultsArea">
     <div class="results-header">
       <div class="results-title" id="resultsTitle">Tonight's ideas for you two</div>
-      <div class="results-actions">
-        <button class="small-btn" onclick="generateIdeas()">↻ new ideas</button>
-      </div>
+      <div><button class="small-btn" onclick="generateIdeas()">↻ new ideas</button></div>
     </div>
-
     <div class="filter-bar" id="filterBar">
       <button class="filter-pill active" data-filter="all" onclick="filterCards(this)">All ideas</button>
       <button class="filter-pill" data-filter="event" onclick="filterCards(this)">📅 Real events</button>
@@ -258,134 +184,145 @@
       <button class="filter-pill" data-filter="free" onclick="filterCards(this)">Free only</button>
       <button class="filter-pill" data-filter="dog" onclick="filterCards(this)">🐾 Dog-friendly</button>
     </div>
-
     <div id="ideaCards"></div>
   </div>
 
   <footer class="footer">
     Made with love for RVA<br>
-    Richmond-specific ideas · tailored to your mood, weather &amp; budget<br>
-    Weather from Open-Meteo · <a href="#" onclick="resetApiKey(); return false;">settings</a>
+    Real events from Reddit · Eventbrite · Style Weekly · RVA Mag<br>
+    Weather from Open-Meteo
   </footer>
 </div>
 
 <script>
-// ── Config ─────────────────────────────────────────────
-// In production (Vercel), API_BASE is empty (uses relative /api/chat)
-// For local testing you can override this
 const API_BASE = 'https://rva-api.vercel.app';
 
-// ── State ──────────────────────────────────────────────
-let weatherData = null;
-let selectedMood = '';
-let selectedTime = 'evening (6pm–9pm)';
-let selectedDog = 'yes, dog-friendly ideas please';
-let allIdeas = [];
-
-// ── Weather ────────────────────────────────────────────
 const WEATHER_CODES = {0:'Clear sky',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Icy fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
 const WEATHER_ICONS = {0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌧',55:'🌧',61:'🌧',63:'🌧',65:'⛈',71:'🌨',73:'❄️',75:'❄️',80:'🌦',81:'🌧',82:'⛈',95:'⛈',96:'⛈',99:'⛈'};
 
+let weatherData = null;
+let selectedMood = '';
+let selectedTime = 'evening (6pm-9pm)';
+let selectedDog = 'yes, dog-friendly ideas please';
+let allIdeas = [];
+
 async function fetchWeather() {
-  document.getElementById('weatherMain').textContent = 'Fetching Richmond weather…';
+  document.getElementById('weatherMain').textContent = 'Loading Richmond weather…';
   document.getElementById('weatherDetail').textContent = '';
   try {
     const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.5407&longitude=-77.4360&current=temperature_2m,weathercode,windspeed_10m,relative_humidity_2m&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=America%2FNew_York');
     const d = await r.json();
     const c = d.current;
-    weatherData = { temp: Math.round(c.temperature_2m), desc: WEATHER_CODES[c.weathercode] || 'Mixed', icon: WEATHER_ICONS[c.weathercode] || '🌤', wind: Math.round(c.windspeed_10m), humidity: c.relative_humidity_2m, code: c.weathercode };
+    weatherData = {
+      temp: Math.round(c.temperature_2m),
+      desc: WEATHER_CODES[c.weathercode] || 'Mixed',
+      icon: WEATHER_ICONS[c.weathercode] || '🌤',
+      wind: Math.round(c.windspeed_10m),
+      humidity: c.relative_humidity_2m,
+      code: c.weathercode
+    };
     document.getElementById('weatherIcon').textContent = weatherData.icon;
-    document.getElementById('weatherMain').textContent = `${weatherData.temp}°F · ${weatherData.desc}`;
-    document.getElementById('weatherDetail').textContent = ` · Wind ${weatherData.wind} mph · ${weatherData.humidity}% humidity`;
+    document.getElementById('weatherMain').textContent = weatherData.temp + 'F · ' + weatherData.desc;
+    document.getElementById('weatherDetail').textContent = ' · Wind ' + weatherData.wind + ' mph · ' + weatherData.humidity + '% humidity';
   } catch(e) {
     document.getElementById('weatherMain').textContent = 'Weather unavailable';
     weatherData = null;
   }
 }
 
-// ── Form ───────────────────────────────────────────────
 function selectMood(btn) {
-  document.querySelectorAll('.mood-pill').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.mood-pill').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
   selectedMood = btn.dataset.mood;
 }
 
 function selectOption(btn, groupId) {
-  document.querySelectorAll(`#${groupId} .option-chip`).forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('#' + groupId + ' .option-chip').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
   if (groupId === 'timeGroup') selectedTime = btn.dataset.val;
   if (groupId === 'dogGroup') selectedDog = btn.dataset.val;
 }
 
 function updateBudget(slider) {
-  const val = parseInt(slider.value);
-  const pct = ((val / 60) * 100).toFixed(1);
+  var val = parseInt(slider.value);
+  var pct = ((val / 60) * 100).toFixed(1);
   slider.style.setProperty('--pct', pct + '%');
   document.getElementById('budgetNum').textContent = val;
-  const notes = {0:'free only',5:'snacks only',10:'a little treat',15:'modest outing',20:'comfortable',25:'a little wiggle room',30:'relaxed budget',35:'splurging a bit',40:'date mode',45:'generous evening',50:'special occasion',55:'going all out',60:"sky's the limit"};
+  var notes = {0:'free only',5:'snacks only',10:'a little treat',15:'modest outing',20:'comfortable',25:'a little wiggle room',30:'relaxed budget',35:'splurging a bit',40:'date mode',45:'generous evening',50:'special occasion',55:'going all out',60:"sky's the limit"};
   document.getElementById('budgetNote').textContent = notes[val] || '';
 }
 
 function filterCards(btn) {
-  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-pill').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
-  const f = btn.dataset.filter;
-  document.querySelectorAll('.idea-card').forEach(card => {
-    if (f === 'all') { card.classList.remove('hidden'); return; }
-    if (f === 'event') { card.classList.toggle('hidden', card.dataset.type !== 'event'); return; }
-    if (f === 'original') { card.classList.toggle('hidden', card.dataset.type !== 'original'); return; }
-    if (f === 'free') { card.classList.toggle('hidden', card.dataset.cost !== 'free'); return; }
-    if (f === 'dog') { card.classList.toggle('hidden', card.dataset.dog !== 'true'); return; }
+  var f = btn.dataset.filter;
+  document.querySelectorAll('.idea-card').forEach(function(card) {
+    if (f === 'all') { card.classList.remove('hidden'); }
+    else if (f === 'event') { card.classList.toggle('hidden', card.dataset.type !== 'event'); }
+    else if (f === 'original') { card.classList.toggle('hidden', card.dataset.type !== 'original'); }
+    else if (f === 'free') { card.classList.toggle('hidden', card.dataset.cost !== 'free'); }
+    else if (f === 'dog') { card.classList.toggle('hidden', card.dataset.dog !== 'true'); }
   });
 }
 
-function resetApiKey() {
-  const newBase = prompt('This tool uses a backend proxy. To update your API key, update the ANTHROPIC_API_KEY environment variable in your Vercel project settings.');
-}
-
-// ── Generate ───────────────────────────────────────────
 async function generateIdeas() {
   if (!selectedMood) { alert('Pick a mood first!'); return; }
 
-  const budget = parseInt(document.getElementById('budgetSlider').value);
-  const extra = document.getElementById('extraContext').value.trim();
-  const today = new Date();
-  const dateStr = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-  const twoWeeks = new Date(today.getTime() + 14 * 86400000).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+  var budget = parseInt(document.getElementById('budgetSlider').value);
+  var extra = document.getElementById('extraContext').value.trim();
+  var today = new Date();
+  var dateStr = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  var weatherStr = weatherData
+    ? (weatherData.temp + 'F, ' + weatherData.desc + ', wind ' + weatherData.wind + 'mph. ' + (weatherData.code >= 61 && weatherData.code <= 82 ? 'Raining - prefer indoor options.' : weatherData.temp < 45 ? 'Cold - suggest warm activities.' : weatherData.temp > 85 ? 'Hot - suggest shade or indoor.' : 'Nice weather - outdoor options work.'))
+    : 'Typical Richmond spring weather.';
 
-  const weatherStr = weatherData
-    ? `Current Richmond weather: ${weatherData.temp}°F, ${weatherData.desc}, wind ${weatherData.wind}mph, ${weatherData.humidity}% humidity. ${weatherData.code >= 61 && weatherData.code <= 82 ? 'It is raining — prioritize indoor or covered options.' : weatherData.temp < 45 ? 'It is cold — suggest warmth-appropriate activities.' : weatherData.temp > 85 ? 'It is hot — suggest shade, water, or indoor options.' : 'Weather is pleasant — outdoor options work well.'}`
-    : 'Weather data unavailable — assume typical Richmond spring weather.';
-
-  // Show loading
   document.getElementById('loadingState').style.display = 'block';
   document.getElementById('resultsArea').style.display = 'none';
   document.getElementById('errorBox').style.display = 'none';
   document.getElementById('generateBtn').disabled = true;
 
-  const phrases = ['thinking about your evening…','considering the weather and your mood…','consulting our Richmond knowledge…','finding the perfect idea for you two…','almost ready…'];
-  let pi = 0;
-  const pt = setInterval(() => { pi = (pi+1)%phrases.length; document.getElementById('loadingText').textContent = phrases[pi]; }, 2500);
+  var phrases = ['scanning Richmond for ideas…', 'checking Reddit and local events…', 'mixing real events with original ideas…', 'thinking about your perfect evening…'];
+  var pi = 0;
+  var pt = setInterval(function() {
+    pi = (pi + 1) % phrases.length;
+    document.getElementById('loadingText').textContent = phrases[pi];
+  }, 2500);
 
-  const prompt = `Today is ${dateStr}. Help a Richmond VA couple plan a low-cost date. Tight budget but want romance.
+  var prompt = 'Today is ' + dateStr + '. Help a Richmond VA couple plan a low-cost date. They are on a tight budget but want romance and connection.\n\n'
+    + 'Couple: have car, dog, board games, kitchen, outdoor gear. Vibe: cozy, creative, adventurous.\n'
+    + 'Weather: ' + weatherStr + '\n'
+    + 'Time: ' + selectedTime + ' | Mood: ' + selectedMood + ' | Budget: $' + budget + ' total | Dog: ' + selectedDog
+    + (extra ? ' | Note: ' + extra : '') + '\n\n'
+    + 'Do one web search for free or cheap Richmond VA events happening this weekend or next week. Then combine with original ideas.\n\n'
+    + 'Richmond spots: Pony Pasture, Belle Isle, Maymont (free), Bryan Park azaleas, Forest Hill Park, Hollywood Cemetery (free river views), Byrd Park, James River trails, Canal Walk, VMFA (free), Carytown, Scott\'s Addition breweries, Church Hill, Jackson Ward murals, Byrd Theatre ($8 movies), South of the James farmers market.\n\n'
+    + 'Return ONLY a valid JSON array with no markdown, no code fences, no explanation. 5-6 ideas mixing real events found and original ideas:\n'
+    + '[{"title":"","type":"event or original","cost":"Free or $X","costTier":"free or low","tags":["tag1","tag2"],"description":"2 warm specific sentences","whatToBring":"brief list","whyItWorks":"one sentence","location":"specific Richmond spot","dogFriendly":true,"link":"url or empty string","source":"source or empty string"}]';
 
-Couple: have car, dog, board games, kitchen, outdoor gear. Vibe: cozy, creative, adventurous. Just the two of them.
-Weather: ${weatherStr}
-Time: ${selectedTime} | Mood: ${selectedMood} | Budget: $${budget} total | Dog: ${selectedDog}${extra ? ' | Note: ' + extra : ''}
+  try {
+    var res = await fetch(API_BASE + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+    });
 
-Do one web search for current free/cheap Richmond VA events this weekend, then combine with original ideas.
+    var data = await res.json();
+    clearInterval(pt);
 
-Richmond spots to draw from: Pony Pasture, Belle Isle, Maymont (free), Bryan Park, Forest Hill Park, Hollywood Cemetery, Byrd Park, James River trails, Canal Walk, VMFA (free), Carytown, Scott's Addition breweries, Church Hill, Jackson Ward murals, Byrd Theatre ($8), farmers markets.
+    if (!res.ok) throw new Error(data.error && data.error.message ? data.error.message : (data.error || ('Server error ' + res.status)));
 
-Return ONLY a JSON array, no markdown, no backticks, 5-6 ideas:
-[{"title":"","type":"event or original","cost":"Free or $X","costTier":"free or low","tags":["tag1","tag2"],"description":"2 warm specific sentences","whatToBring":"brief list","whyItWorks":"one sentence","location":"specific Richmond spot","dogFriendly":true,"link":"url or empty string","source":"source or empty string"}]`;
+    var textBlocks = data.content.filter(function(b) { return b.type === 'text'; });
+    var fullText = textBlocks.map(function(b) { return b.text; }).join('');
+    var cleaned = fullText.replace(/```json/g, '').replace(/```/g, '').trim();
+    var match = cleaned.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error('Could not parse ideas from response');
 
-renderIdeas(allIdeas);
+    allIdeas = JSON.parse(match[0]);
+    renderIdeas(allIdeas);
 
   } catch(err) {
     clearInterval(pt);
-    const eb = document.getElementById('errorBox');
-    eb.innerHTML = `<strong>Something went wrong:</strong> ${err.message}<br><br><small>Make sure your Vercel deployment is live and the ANTHROPIC_API_KEY environment variable is set in your Vercel project settings.</small>`;
+    var eb = document.getElementById('errorBox');
+    eb.innerHTML = '<strong>Something went wrong:</strong> ' + err.message;
     eb.style.display = 'block';
   } finally {
     document.getElementById('loadingState').style.display = 'none';
@@ -394,55 +331,40 @@ renderIdeas(allIdeas);
 }
 
 function renderIdeas(ideas) {
-  const area = document.getElementById('resultsArea');
-  const cards = document.getElementById('ideaCards');
-
-  const timeLabel = selectedTime.split(' ')[0];
-  const titleMap = { morning: 'This morning', afternoon: 'This afternoon', evening: "Tonight's ideas", late: 'Late night ideas' };
+  var area = document.getElementById('resultsArea');
+  var cards = document.getElementById('ideaCards');
+  var timeLabel = selectedTime.split(' ')[0];
+  var titleMap = { morning: 'This morning', afternoon: 'This afternoon', evening: "Tonight's ideas", late: 'Late night ideas' };
   document.getElementById('resultsTitle').textContent = (titleMap[timeLabel] || "Tonight's ideas") + ' for you two';
 
-  // Reset filter
-  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-pill').forEach(function(b) { b.classList.remove('active'); });
   document.querySelector('[data-filter="all"]').classList.add('active');
 
-  const eventCount = ideas.filter(i => i.type === 'event').length;
-  const originalCount = ideas.filter(i => i.type === 'original').length;
-
-  cards.innerHTML = ideas.map(idea => `
-    <div class="idea-card" data-type="${idea.type}" data-cost="${idea.costTier}" data-dog="${idea.dogFriendly}">
-      <div class="idea-header">
-        <div class="idea-title">${idea.title}</div>
-        <span class="badge badge-${idea.costTier}">${idea.cost}</span>
-      </div>
-      <div class="badge-row">
-        <span class="badge badge-${idea.type}">${idea.type === 'event' ? '📅 Real event' : '✨ Original idea'}</span>
-        ${idea.tags.map(t => `<span class="badge badge-tag">${t}</span>`).join('')}
-        ${idea.dogFriendly ? '<span class="badge badge-dog">🐾 dog ok</span>' : ''}
-      </div>
-      <p class="idea-desc">${idea.description}</p>
-      <div class="idea-details">
-        <div class="detail-block">
-          <div class="detail-label">What to bring</div>
-          <div class="detail-value">${idea.whatToBring}</div>
-        </div>
-        <div class="detail-block">
-          <div class="detail-label">Why it works today</div>
-          <div class="detail-value">${idea.whyItWorks}</div>
-        </div>
-      </div>
-      <div class="idea-footer">
-        <div class="idea-location">📍 ${idea.location}${idea.source ? ` · <em>${idea.source}</em>` : ''}</div>
-        ${idea.link ? `<a class="idea-link" href="${idea.link}" target="_blank" rel="noopener">details →</a>` : ''}
-      </div>
-    </div>
-  `).join('');
+  cards.innerHTML = ideas.map(function(idea) {
+    return '<div class="idea-card" data-type="' + (idea.type || 'original') + '" data-cost="' + (idea.costTier || 'low') + '" data-dog="' + (idea.dogFriendly ? 'true' : 'false') + '">'
+      + '<div class="idea-header"><div class="idea-title">' + idea.title + '</div>'
+      + '<span class="badge badge-' + (idea.costTier || 'low') + '">' + idea.cost + '</span></div>'
+      + '<div class="badge-row">'
+      + '<span class="badge badge-' + (idea.type || 'original') + '">' + (idea.type === 'event' ? '📅 Real event' : '✨ Original idea') + '</span>'
+      + (idea.tags || []).map(function(t) { return '<span class="badge badge-tag">' + t + '</span>'; }).join('')
+      + (idea.dogFriendly ? '<span class="badge badge-dog">🐾 dog ok</span>' : '')
+      + '</div>'
+      + '<p class="idea-desc">' + idea.description + '</p>'
+      + '<div class="idea-details">'
+      + '<div class="detail-block"><div class="detail-label">What to bring</div><div class="detail-value">' + idea.whatToBring + '</div></div>'
+      + '<div class="detail-block"><div class="detail-label">Why it works today</div><div class="detail-value">' + idea.whyItWorks + '</div></div>'
+      + '</div>'
+      + '<div class="idea-footer">'
+      + '<div class="idea-location">📍 ' + idea.location + (idea.source ? ' · <em>' + idea.source + '</em>' : '') + '</div>'
+      + (idea.link ? '<a class="idea-link" href="' + idea.link + '" target="_blank" rel="noopener">details →</a>' : '')
+      + '</div></div>';
+  }).join('');
 
   area.style.display = 'block';
   area.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ── Init ───────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', function() {
   fetchWeather();
   updateBudget(document.getElementById('budgetSlider'));
 });
