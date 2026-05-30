@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>our date night · RVA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #faf7f2; --warm-white: #fff9f4; --ink: #1a1208; --ink-soft: #4a3f2f;
+    --ink-muted: #8c7b65; --accent: #c84b2f; --accent-soft: #f0ddd7;
+    --gold: #c4922a; --gold-soft: #fdf0d5; --sage: #5a7a5c; --sage-soft: #e8f0e8;
+    --blue-soft: #e8f0fe; --blue: #1a56a0;
+    --border: rgba(26,18,8,0.1); --border-mid: rgba(26,18,8,0.18);
+    --radius: 16px; --radius-sm: 8px;
+  }
+  body { font-family: "DM Sans", sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+  .page { max-width: 700px; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+  .header { text-align: center; padding: 2rem 0 1.75rem; }
+  .header-eyebrow { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.75rem; }
+  .header h1 { font-family: "Playfair Display", serif; font-size: clamp(1.9rem, 6vw, 2.8rem); font-weight: 400; line-height: 1.15; }
+  .header h1 em { font-style: italic; color: var(--accent); }
+  .header-sub { font-size: 13px; color: var(--ink-muted); margin-top: 0.625rem; line-height: 1.6; }
+  .weather-bar { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1.125rem; display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; font-size: 13px; }
+  .weather-icon { font-size: 18px; }
+  .weather-text { flex: 1; }
+  .weather-main { font-weight: 500; color: var(--ink); }
+  .weather-detail { color: var(--ink-muted); font-size: 12px; }
+  .weather-refresh { background: none; border: none; color: var(--ink-muted); cursor: pointer; font-size: 12px; padding: 4px 8px; border-radius: 6px; }
+  .weather-refresh:hover { background: var(--border); }
+  .form-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.375rem; margin-bottom: 1.25rem; }
+  .form-section { margin-bottom: 1.375rem; }
+  .form-section:last-child { margin-bottom: 0; }
+  .form-label { display: block; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.5rem; font-weight: 500; }
+  .mood-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+  .mood-pill { padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border-mid); background: transparent; font-family: "DM Sans", sans-serif; font-size: 13px; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px; }
+  .mood-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .mood-pill.selected { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 500; }
+  .budget-display { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.625rem; }
+  .budget-amount { font-family: "Playfair Display", serif; font-size: 1.6rem; color: var(--ink); }
+  .budget-amount span { font-size: 0.9rem; color: var(--ink-muted); font-family: "DM Sans", sans-serif; }
+  .budget-note { font-size: 12px; color: var(--ink-muted); }
+  input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--pct, 42%), var(--border-mid) var(--pct, 42%)); border-radius: 2px; outline: none; cursor: pointer; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); border: 3px solid var(--warm-white); box-shadow: 0 1px 4px rgba(200,75,47,0.3); cursor: pointer; }
+  input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--accent); border: 3px solid var(--warm-white); cursor: pointer; }
+  .range-labels { display: flex; justify-content: space-between; margin-top: 5px; font-size: 11px; color: var(--ink-muted); }
+  .options-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .option-chip { flex: 1; min-width: 80px; padding: 9px 10px; border: 1px solid var(--border-mid); border-radius: var(--radius-sm); background: transparent; font-family: "DM Sans", sans-serif; font-size: 13px; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; text-align: center; white-space: nowrap; }
+  .option-chip:hover { border-color: var(--gold); color: var(--gold); }
+  .option-chip.selected { background: var(--gold-soft); border-color: var(--gold); color: var(--ink); font-weight: 500; }
+  .vibe-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+  .vibe-chip { padding: 7px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-mid); background: transparent; font-family: "DM Sans", sans-serif; font-size: 13px; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px; }
+  .vibe-chip:hover { border-color: var(--blue); color: var(--blue); }
+  .vibe-chip.selected { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); font-weight: 500; }
+  .context-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-mid); border-radius: var(--radius-sm); font-family: "DM Sans", sans-serif; font-size: 13px; background: white; color: var(--ink); resize: vertical; outline: none; line-height: 1.6; }
+  .context-input:focus { border-color: var(--gold); }
+  .generate-btn { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: var(--radius); font-family: "Playfair Display", serif; font-size: 1.1rem; font-style: italic; cursor: pointer; transition: all 0.2s; }
+  .generate-btn:hover { background: #b03d24; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(200,75,47,0.25); }
+  .generate-btn:active { transform: translateY(0); }
+  .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+  .loading-state { text-align: center; padding: 3rem 1rem; display: none; }
+  .loading-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 1rem; }
+  .loading-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: bounce 1.2s ease-in-out infinite; }
+  .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,80%,100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+  .loading-text { font-family: "Playfair Display", serif; font-style: italic; color: var(--ink-muted); font-size: 1rem; }
+  .loading-sub { font-size: 12px; color: var(--ink-muted); margin-top: 6px; }
+  .results-area { display: none; }
+  .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+  .results-title { font-family: "Playfair Display", serif; font-size: 1.2rem; color: var(--ink); }
+  .small-btn { background: none; border: 1px solid var(--border-mid); border-radius: 999px; padding: 4px 12px; font-size: 12px; color: var(--ink-soft); cursor: pointer; font-family: "DM Sans", sans-serif; transition: all 0.15s; }
+  .small-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-bar { display: flex; gap: 6px; margin-bottom: 1.125rem; flex-wrap: wrap; }
+  .filter-pill { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-mid); background: transparent; font-size: 12px; color: var(--ink-muted); cursor: pointer; font-family: "DM Sans", sans-serif; transition: all 0.15s; }
+  .filter-pill:hover { border-color: var(--ink-soft); color: var(--ink-soft); }
+  .filter-pill.active { background: var(--ink); border-color: var(--ink); color: white; }
+  .idea-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.375rem; margin-bottom: 0.875rem; transition: box-shadow 0.15s; }
+  .idea-card:hover { box-shadow: 0 4px 20px rgba(26,18,8,0.06); }
+  .idea-card.hidden { display: none; }
+  .idea-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 0.5rem; }
+  .idea-title { font-family: "Playfair Display", serif; font-size: 1.05rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
+  .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0.625rem; align-items: center; }
+  .badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+  .badge-event { background: var(--blue-soft); color: var(--blue); }
+  .badge-original { background: var(--accent-soft); color: var(--accent); }
+  .badge-free { background: var(--sage-soft); color: var(--sage); }
+  .badge-low { background: var(--gold-soft); color: #7a5a10; }
+  .badge-tag { background: var(--cream); border: 1px solid var(--border); color: var(--ink-muted); }
+  .idea-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 0.875rem; }
+  .idea-details { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 0.75rem; }
+  .detail-block { background: var(--cream); border-radius: var(--radius-sm); padding: 0.5rem 0.75rem; }
+  .detail-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 2px; }
+  .detail-value { font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+  .idea-footer { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+  .idea-location { font-size: 12px; color: var(--ink-muted); display: flex; gap: 5px; align-items: flex-start; flex: 1; }
+  .idea-link { font-size: 12px; color: var(--accent); text-decoration: none; white-space: nowrap; }
+  .idea-link:hover { text-decoration: underline; }
+  .error-box { background: #fff0ee; border: 1px solid rgba(200,75,47,0.25); border-radius: var(--radius); padding: 1.125rem; font-size: 14px; color: var(--accent); display: none; line-height: 1.6; margin-top: 1rem; }
+  .footer { text-align: center; padding: 2rem 0 0; font-size: 12px; color: var(--ink-muted); line-height: 1.8; }
+  .footer a { color: var(--accent); text-decoration: none; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0.25rem 0 1.375rem; }
+  @media (max-width: 480px) { .idea-details { grid-template-columns: 1fr; } .options-row { flex-direction: column; } .option-chip { min-width: unset; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <p class="header-eyebrow">Richmond, Virginia</p>
+    <h1>our <em>date night</em><br>idea generator</h1>
+    <p class="header-sub">Real events + original ideas &middot; tailored to weather, mood &amp; budget</p>
+  </header>
+
+  <div class="weather-bar" id="weatherBar">
+    <span class="weather-icon" id="weatherIcon">&#127780;</span>
+    <div class="weather-text">
+      <span class="weather-main" id="weatherMain">Loading Richmond weather&hellip;</span>
+      <span class="weather-detail" id="weatherDetail"></span>
+    </div>
+    <button class="weather-refresh" onclick="fetchWeather()">&#8635; refresh</button>
+  </div>
+
+  <div class="form-card">
+    <div class="form-section">
+      <label class="form-label">What's the mood today?</label>
+      <div class="mood-grid" id="moodGrid">
+        <button class="mood-pill" data-mood="cozy and low-key" onclick="selectMood(this)">&#128557; Cozy &amp; low-key</button>
+        <button class="mood-pill" data-mood="adventurous and outdoorsy" onclick="selectMood(this)">&#127807; Adventurous</button>
+        <button class="mood-pill" data-mood="creative and artsy" onclick="selectMood(this)">&#127912; Creative</button>
+        <button class="mood-pill" data-mood="romantic and slow" onclick="selectMood(this)">&#10024; Romantic</button>
+        <button class="mood-pill" data-mood="playful and fun" onclick="selectMood(this)">&#127922; Playful</button>
+        <button class="mood-pill" data-mood="surprise us with something unexpected" onclick="selectMood(this)">&#127873; Surprise us</button>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="form-section">
+      <label class="form-label">Type of vibe <span style="font-weight:300;text-transform:none;letter-spacing:0;">(pick all that apply)</span></label>
+      <div class="vibe-grid" id="vibeGrid">
+        <button class="vibe-chip" data-vibe="foodie" onclick="toggleVibe(this)">&#127373; Foodie</button>
+        <button class="vibe-chip" data-vibe="active" onclick="toggleVibe(this)">&#127939; Active</button>
+        <button class="vibe-chip" data-vibe="cultural" onclick="toggleVibe(this)">&#127914; Cultural</button>
+        <button class="vibe-chip" data-vibe="chill" onclick="toggleVibe(this)">&#128522; Chill</button>
+        <button class="vibe-chip" data-vibe="social" onclick="toggleVibe(this)">&#127881; Social</button>
+        <button class="vibe-chip" data-vibe="nature" onclick="toggleVibe(this)">&#127795; Nature</button>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="form-section">
+      <label class="form-label">Indoor or outdoor?</label>
+      <div class="options-row" id="indoorGroup">
+        <button class="option-chip" data-val="indoors" onclick="selectOption(this,'indoorGroup')">&#127968; Indoor</button>
+        <button class="option-chip selected" data-val="either indoors or outdoors" onclick="selectOption(this,'indoorGroup')">&#8597; Either</button>
+        <button class="option-chip" data-val="outdoors" onclick="selectOption(this,'indoorGroup')">&#127807; Outdoor</button>
+      </div>
+    </div>
+    <div class="form-section">
+      <label class="form-label">Energy level today</label>
+      <div class="options-row" id="energyGroup">
+        <button class="option-chip" data-val="low energy, we want to take it easy" onclick="selectOption(this,'energyGroup')">&#128564; Low</button>
+        <button class="option-chip selected" data-val="medium energy" onclick="selectOption(this,'energyGroup')">&#128578; Medium</button>
+        <button class="option-chip" data-val="high energy, we want to be active" onclick="selectOption(this,'energyGroup')">&#9889; High</button>
+      </div>
+    </div>
+    <div class="form-section">
+      <label class="form-label">How far will you travel?</label>
+      <div class="options-row" id="distanceGroup">
+        <button class="option-chip selected" data-val="stay local, close to home in Richmond" onclick="selectOption(this,'distanceGroup')">&#128205; Local</button>
+        <button class="option-chip" data-val="up to 30 minutes from Richmond" onclick="selectOption(this,'distanceGroup')">&#128664; 30 min</button>
+        <button class="option-chip" data-val="open to a day trip up to 2 hours away" onclick="selectOption(this,'distanceGroup')">&#128506; Day trip</button>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="form-section">
+      <label class="form-label">Budget for today</label>
+      <div class="budget-display">
+        <div class="budget-amount" id="budgetDisplay">$<span id="budgetNum">25</span> <span>total</span></div>
+        <div class="budget-note" id="budgetNote">a little wiggle room</div>
+      </div>
+      <input type="range" min="0" max="60" value="25" step="5" id="budgetSlider" oninput="updateBudget(this)" />
+      <div class="range-labels"><span>$0 free only</span><span>$60</span></div>
+    </div>
+    <div class="form-section">
+      <label class="form-label">Time of day</label>
+      <div class="options-row" id="timeGroup">
+        <button class="option-chip" data-val="morning 10am to 1pm" onclick="selectOption(this,'timeGroup')">Morning</button>
+        <button class="option-chip" data-val="afternoon 2pm to 5pm" onclick="selectOption(this,'timeGroup')">Afternoon</button>
+        <button class="option-chip selected" data-val="evening 6pm to 9pm" onclick="selectOption(this,'timeGroup')">Evening</button>
+        <button class="option-chip" data-val="late night 9pm plus" onclick="selectOption(this,'timeGroup')">Late night</button>
+      </div>
+    </div>
+    <div class="form-section">
+      <label class="form-label">Anything on your mind? <span style="font-weight:300;text-transform:none;letter-spacing:0;">(optional)</span></label>
+      <textarea id="extraContext" rows="2" class="context-input" placeholder="e.g. we want to stay close to Carytown, or craving something that feels like a restaurant night..."></textarea>
+    </div>
+  </div>
+
+  <button class="generate-btn" id="generateBtn" onclick="generateIdeas()">plan our date night &rarr;</button>
+
+  <div class="loading-state" id="loadingState">
+    <div class="loading-dots">
+      <div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div>
+    </div>
+    <p class="loading-text" id="loadingText">scanning Richmond for ideas&hellip;</p>
+    <p class="loading-sub">searching Reddit, events, markets, local news + more</p>
+  </div>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <div class="results-area" id="resultsArea">
+    <div class="results-header">
+      <div class="results-title" id="resultsTitle">Tonight's ideas for you two</div>
+      <div><button class="small-btn" onclick="generateIdeas()">&#8635; new ideas</button></div>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-pill active" data-filter="all" onclick="filterCards(this)">All ideas</button>
+      <button class="filter-pill" data-filter="event" onclick="filterCards(this)">&#128197; Real events</button>
+      <button class="filter-pill" data-filter="original" onclick="filterCards(this)">&#10024; Original ideas</button>
+      <button class="filter-pill" data-filter="free" onclick="filterCards(this)">Free only</button>
+    </div>
+    <div id="ideaCards"></div>
+  </div>
+
+  <footer class="footer">
+    Made with love for RVA<br>
+    Events from Reddit &middot; Eventbrite &middot; Style Weekly &middot; RVA Mag &middot; Visit Richmond &middot; Times-Dispatch<br>
+    Weather from Open-Meteo
+  </footer>
+</div>
+
+<script>
+var API_BASE = "https://rva-api.vercel.app";
+
+var WEATHER_CODES = {0:"Clear sky",1:"Mostly clear",2:"Partly cloudy",3:"Overcast",45:"Foggy",48:"Icy fog",51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",61:"Light rain",63:"Rain",65:"Heavy rain",71:"Light snow",73:"Snow",75:"Heavy snow",80:"Rain showers",81:"Showers",82:"Heavy showers",95:"Thunderstorm",96:"Thunderstorm",99:"Thunderstorm"};
+var WEATHER_ICONS = {0:"&#9728;",1:"&#127780;",2:"&#9729;",3:"&#9729;",45:"&#127787;",48:"&#127787;",51:"&#127782;",53:"&#127783;",55:"&#127783;",61:"&#127783;",63:"&#127783;",65:"&#9928;",71:"&#127784;",73:"&#10052;",75:"&#10052;",80:"&#127782;",81:"&#127783;",82:"&#9928;",95:"&#9928;",96:"&#9928;",99:"&#9928;"};
+
+var weatherData = null;
+var selectedMood = "";
+var selectedTime = "evening 6pm to 9pm";
+var selectedIndoor = "either indoors or outdoors";
+var selectedEnergy = "medium energy";
+var selectedDistance = "stay local, close to home in Richmond";
+var selectedVibes = [];
+var allIdeas = [];
+
+async function fetchWeather() {
+  document.getElementById("weatherMain").textContent = "Loading Richmond weather...";
+  document.getElementById("weatherDetail").textContent = "";
+  try {
+    var r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=37.5407&longitude=-77.4360&current=temperature_2m,weathercode,windspeed_10m,relative_humidity_2m&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=America%2FNew_York");
+    var d = await r.json();
+    var c = d.current;
+    weatherData = {
+      temp: Math.round(c.temperature_2m),
+      desc: WEATHER_CODES[c.weathercode] || "Mixed",
+      icon: WEATHER_ICONS[c.weathercode] || "&#127780;",
+      wind: Math.round(c.windspeed_10m),
+      humidity: c.relative_humidity_2m,
+      code: c.weathercode
+    };
+    document.getElementById("weatherIcon").innerHTML = weatherData.icon;
+    document.getElementById("weatherMain").textContent = weatherData.temp + "F, " + weatherData.desc;
+    document.getElementById("weatherDetail").textContent = " - Wind " + weatherData.wind + " mph, " + weatherData.humidity + "% humidity";
+  } catch(e) {
+    document.getElementById("weatherMain").textContent = "Weather unavailable";
+    weatherData = null;
+  }
+}
+
+function selectMood(btn) {
+  document.querySelectorAll(".mood-pill").forEach(function(b) { b.classList.remove("selected"); });
+  btn.classList.add("selected");
+  selectedMood = btn.dataset.mood;
+}
+
+function toggleVibe(btn) {
+  btn.classList.toggle("selected");
+  var vibe = btn.dataset.vibe;
+  var idx = selectedVibes.indexOf(vibe);
+  if (idx === -1) { selectedVibes.push(vibe); } else { selectedVibes.splice(idx, 1); }
+}
+
+function selectOption(btn, groupId) {
+  document.querySelectorAll("#" + groupId + " .option-chip").forEach(function(b) { b.classList.remove("selected"); });
+  btn.classList.add("selected");
+  if (groupId === "timeGroup") selectedTime = btn.dataset.val;
+  if (groupId === "indoorGroup") selectedIndoor = btn.dataset.val;
+  if (groupId === "energyGroup") selectedEnergy = btn.dataset.val;
+  if (groupId === "distanceGroup") selectedDistance = btn.dataset.val;
+}
+
+function updateBudget(slider) {
+  var val = parseInt(slider.value);
+  var pct = ((val / 60) * 100).toFixed(1);
+  slider.style.setProperty("--pct", pct + "%");
+  document.getElementById("budgetNum").textContent = val;
+  var notes = {0:"free only",5:"snacks only",10:"a little treat",15:"modest outing",20:"comfortable",25:"a little wiggle room",30:"relaxed budget",35:"splurging a bit",40:"date mode",45:"generous evening",50:"special occasion",55:"going all out",60:"sky is the limit"};
+  document.getElementById("budgetNote").textContent = notes[val] || "";
+}
+
+function filterCards(btn) {
+  document.querySelectorAll(".filter-pill").forEach(function(b) { b.classList.remove("active"); });
+  btn.classList.add("active");
+  var f = btn.dataset.filter;
+  document.querySelectorAll(".idea-card").forEach(function(card) {
+    if (f === "all") { card.classList.remove("hidden"); }
+    else if (f === "event") { card.classList.toggle("hidden", card.dataset.type !== "event"); }
+    else if (f === "original") { card.classList.toggle("hidden", card.dataset.type !== "original"); }
+    else if (f === "free") { card.classList.toggle("hidden", card.dataset.cost !== "free"); }
+  });
+}
+
+function buildPrompt(dateStr, monthStr, budget, weatherStr, extra) {
+  var vibeStr = selectedVibes.length > 0 ? selectedVibes.join(", ") : "no specific vibe preference";
+  var maxBudgetPer = Math.max(budget, 20);
+  var lines = [
+    "Today is " + dateStr + ". Help a Richmond VA couple plan a great low-cost date.",
+    "",
+    "COUPLE PROFILE: Richmond residents with a car. Have board games, a well-used kitchen, and outdoor gear at home.",
+    "",
+    "TODAY'S INPUTS:",
+    "- Weather: " + weatherStr,
+    "- Mood: " + selectedMood,
+    "- Vibe types: " + vibeStr,
+    "- Indoor/outdoor preference: " + selectedIndoor,
+    "- Energy level: " + selectedEnergy,
+    "- Distance willing to travel: " + selectedDistance,
+    "- Time of day: " + selectedTime,
+    "- Total budget for the entire date: $" + budget,
+    extra ? "- Their note: " + extra : "",
+    "",
+    "STEP 1 - SEARCH FOR REAL EVENTS. Do THREE web searches:",
+    "Search 1: Richmond VA events this weekend " + monthStr,
+    "Search 2: Richmond VA festivals concerts sporting events wine tastings " + monthStr,
+    "Search 3: Richmond VA vintage market makers market farmers market flea market pop-up " + monthStr,
+    "",
+    "Sources to check: visitrichmondva.com, styleweekly.com, rvamag.com, richmondmagazine.com, r/rva on Reddit, r/okbuddyrva on Reddit, Eventbrite Richmond, Meetup Richmond, Richmond Times-Dispatch events, Hardywood brewery events, Triple Crossing events, The Veil events, Ardent Craft Ales events, milb.com for Flying Squirrels, richmondsoccerclub.com for Kickers, richmondivysoccer.com for Richmond Ivy.",
+    "",
+    "Look specifically for: named festivals, cultural events, food events, outdoor concerts, live music, art openings, community gatherings, farmers markets, vintage markets, makers markets, pop-up craft markets, free outdoor events, brewery events, museum events, sporting events (Flying Squirrels baseball, Richmond Kickers soccer, Richmond Ivy womens soccer, VCU Rams, UR Spiders), free wine tastings (Union Market Thursday wine tastings, Tuesday Lombardy wine stroll, wine shop tastings).",
+    "",
+    "Include events under $" + maxBudgetPer + " per person.",
+    "",
+    "STEP 2 - GENERATE ORIGINAL IDEAS using deep Richmond knowledge.",
+    "IMPORTANT: Each of the 6 ideas must be a DIFFERENT category. No two park ideas. No two brewery ideas. Spread across: outdoor adventure, culture, food/drink, home-based, neighborhood exploration, entertainment.",
+    "",
+    "WEATHER WEIGHTING - This is critical:",
+    "- Current weather: " + weatherStr,
+    "- If pleasant (55-85F, no rain): PRIORITIZE outdoor events and walking activities. List outdoor ideas first. If an outdoor walking event exists (wine stroll, street festival, market, riverside walk), make it the top recommendation.",
+    "- If rainy or cold under 45F or very hot over 90F: PRIORITIZE indoor events. Flag outdoor ideas as weather-dependent.",
+    "",
+    "RICHMOND KNOWLEDGE BANK:",
+    "OUTDOORS: Pony Pasture (rocky beach, swimming hole, great for sunset), Belle Isle (rope swing, ruins, skyline views, Pipeline Trail), Texas Beach, Huguenot Flatwater, North Bank Trail, Buttermilk Trail, Ancarrows Landing, Dutch Gap, Four Mile Creek",
+    "PARKS: Maymont (always free - Japanese garden, waterfall, bison, farm animals), Bryan Park (azaleas Apr-May), Forest Hill Park, Byrd Park (paddle boats $7, disc golf, Dogwood Dell), Chimborazo Park (panoramic city views), Pocahontas State Park (30 min out)",
+    "FREE CULTURE: VMFA (always free permanent collection), Library of Virginia (free exhibits), Valentine Museum, Black History Museum Jackson Ward, Canal Walk (1.25mi historic waterway), Tredegar Iron Works grounds, Hollywood Cemetery (riverside, presidential graves), 100+ Richmond murals walking tour, Carytown window shopping",
+    "MARKETS: South of the James Farmers Market (Sat mornings Forest Hill Park area), Lakeside Farmers Market (Sat), St. Stephens Farmers Market (Tue/Sat Ginter Park), 17th Street Market (Shockoe Bottom weekends), Carytown weekend markets, RVA Made pop-up markets, vintage markets at breweries in Scotts Addition",
+    "SPORTS: Richmond Flying Squirrels baseball at The Diamond (affordable, great atmosphere $8-15), Richmond Kickers soccer at City Stadium, Richmond Ivy Womens Soccer (often free or very cheap), VCU Rams athletics, UR Spiders games",
+    "LIVE MUSIC: The National, The Broadberry (smaller shows $10-15), Tin Pan (intimate jazz and acoustic), Capital Ale House (free live music some nights), Hardywood patio concerts, Strange Matter, The Camel, Kabana Rooftop",
+    "WINE EVENTS: Union Market Thursday wine tastings (free or cheap, 5-7pm Carytown), Tuesday Lombardy wine stroll (monthly walking event through Museum District and Carytown), Total Wine tastings, Whole Foods wine events, local wine shop free pours",
+    "CHEAP EATS AND DRINKS: Byrd Theatre ($8 movies - best date in Richmond), food truck pods, Scotts Addition brewery row (Hardywood, Triple Crossing, The Veil, Ardent, Buskey Cider), Carytown coffee crawl, Movieland drive-in",
+    "NEIGHBORHOODS: Church Hill (Patrick Henry shrine, stunning river overlooks), Oregon Hill (hidden staircases, river access), Museum District and The Fan (Victorian architecture, Monument Ave), Jackson Ward (historic Black Wall Street, Hippodrome, murals), Manchester (street art, brown pelican views), Shockoe Bottom (17th Street Market, canal)",
+    "AT-HOME: Cook a new cuisine with a $15 grocery budget, backyard stargazing with blankets and wine, kitchen cocktail competition, progressive Carytown dessert crawl, sunrise hike at Belle Isle, sunset picnic at Chimborazo",
+    "DAY TRIPS (if selected): Charlottesville Downtown Mall (free to walk), Williamsburg historic area, Virginia Beach boardwalk, Shenandoah overlooks, Fredericksburg historic downtown",
+    "",
+    "RULES:",
+    "1. Return exactly 6 ideas: at least 2 real events found from searching, rest are original ideas",
+    "2. Each idea must be a different category - no two the same type",
+    "3. All ideas must fit the $" + budget + " total budget",
+    "4. Respect the indoor/outdoor preference: " + selectedIndoor,
+    "5. Match the energy level: " + selectedEnergy,
+    "6. On nice weather days, outdoor and walking ideas come first",
+    "7. Return ONLY valid JSON with no markdown, no code fences, no explanation",
+    "",
+    "JSON format - return an array of exactly 6 objects:",
+    '[{"title":"","type":"event or original","cost":"Free or $X","costTier":"free or low","tags":["tag1","tag2"],"description":"2-3 warm specific sentences","whatToBring":"specific practical list","whyItWorks":"one sentence tied to their inputs today","location":"specific Richmond spot with neighborhood","link":"url if real event, empty string if original","source":"source name if real event, empty string if original"}]'
+  ];
+  return lines.join("\n");
+}
+
+async function generateIdeas() {
+  if (!selectedMood) { alert("Pick a mood first!"); return; }
+
+  var budget = parseInt(document.getElementById("budgetSlider").value);
+  var extra = document.getElementById("extraContext").value.trim();
+  var today = new Date();
+  var dateStr = today.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  var monthStr = today.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+  var weatherStr = "Typical Richmond spring weather, assume pleasant.";
+  if (weatherData) {
+    var note = "";
+    if (weatherData.code >= 61 && weatherData.code <= 82) { note = " It is raining - strongly prefer indoor options."; }
+    else if (weatherData.temp < 40) { note = " Very cold - suggest warm cozy indoor activities."; }
+    else if (weatherData.temp < 55) { note = " Cool but manageable - layers required for outdoor."; }
+    else if (weatherData.temp > 90) { note = " Very hot - prefer shaded, water, or indoor options."; }
+    else { note = " Pleasant weather - outdoor options work very well today."; }
+    weatherStr = weatherData.temp + "F, " + weatherData.desc + ", wind " + weatherData.wind + "mph." + note;
+  }
+
+  document.getElementById("loadingState").style.display = "block";
+  document.getElementById("resultsArea").style.display = "none";
+  document.getElementById("errorBox").style.display = "none";
+  document.getElementById("generateBtn").disabled = true;
+
+  var phrases = ["scanning Richmond for ideas...", "checking Reddit r/rva and r/okbuddyrva...", "searching events, markets, and live music...", "looking for festivals and wine tastings...", "mixing real events with original ideas...", "almost there..."];
+  var pi = 0;
+  var pt = setInterval(function() { pi = (pi + 1) % phrases.length; document.getElementById("loadingText").textContent = phrases[pi]; }, 2500);
+
+  var prompt = buildPrompt(dateStr, monthStr, budget, weatherStr, extra);
+
+  try {
+    var res = await fetch(API_BASE + "/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        system: "You are a helpful assistant. When asked to return JSON, you MUST return ONLY a valid JSON array with no other text, no markdown, no code fences, no explanation before or after. Your entire response must be parseable by JSON.parse(). Never include unescaped quotes inside JSON string values.",
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    var data = await res.json();
+    clearInterval(pt);
+
+    if (!res.ok) {
+      var errMsg = "Server error " + res.status;
+      if (data.error) { errMsg = typeof data.error === "string" ? data.error : (data.error.message || errMsg); }
+      throw new Error(errMsg);
+    }
+
+    var textBlocks = data.content.filter(function(b) { return b.type === "text"; });
+    var fullText = textBlocks.map(function(b) { return b.text; }).join("");
+    var cleaned = fullText.replace(/```json/g, "").replace(/```/g, "").trim();
+    var firstBracket = cleaned.indexOf("[");
+    var lastBracket = cleaned.lastIndexOf("]");
+    if (firstBracket === -1 || lastBracket === -1) throw new Error("Could not find ideas in response - please try again");
+    var jsonStr = cleaned.substring(firstBracket, lastBracket + 1);
+    // Attempt parse with fallback cleanup
+    try {
+      allIdeas = JSON.parse(jsonStr);
+    } catch(parseErr) {
+      // Try sanitizing common issues: smart quotes, line breaks inside strings
+      var sanitized = jsonStr.split("\n").join(" ").split("\r").join(" ");
+      allIdeas = JSON.parse(sanitized);
+    }
+    renderIdeas(allIdeas);
+
+  } catch(err) {
+    clearInterval(pt);
+    var eb = document.getElementById("errorBox");
+    eb.innerHTML = "<strong>Something went wrong:</strong> " + err.message + "<br><br><small>If you see a rate limit error, wait 60 seconds and try again.</small>";
+    eb.style.display = "block";
+  } finally {
+    document.getElementById("loadingState").style.display = "none";
+    document.getElementById("generateBtn").disabled = false;
+  }
+}
+
+function renderIdeas(ideas) {
+  var area = document.getElementById("resultsArea");
+  var cards = document.getElementById("ideaCards");
+  var timeLabel = selectedTime.split(" ")[0];
+  var titleMap = { morning: "This morning", afternoon: "This afternoon", evening: "Tonight's ideas", late: "Late night ideas" };
+  document.getElementById("resultsTitle").textContent = (titleMap[timeLabel] || "Tonight's ideas") + " for you two";
+  document.querySelectorAll(".filter-pill").forEach(function(b) { b.classList.remove("active"); });
+  document.querySelector("[data-filter=\"all\"]").classList.add("active");
+  cards.innerHTML = ideas.map(function(idea) {
+    var costTier = idea.costTier || "low";
+    var type = idea.type || "original";
+    return "<div class=\"idea-card\" data-type=\"" + type + "\" data-cost=\"" + costTier + "\">"
+      + "<div class=\"idea-header\"><div class=\"idea-title\">" + (idea.title || "") + "</div>"
+      + "<span class=\"badge badge-" + costTier + "\">" + (idea.cost || "") + "</span></div>"
+      + "<div class=\"badge-row\">"
+      + "<span class=\"badge badge-" + type + "\">" + (type === "event" ? "&#128197; Real event" : "&#10024; Original idea") + "</span>"
+      + (idea.tags || []).map(function(t) { return "<span class=\"badge badge-tag\">" + t + "</span>"; }).join("")
+      + "</div>"
+      + "<p class=\"idea-desc\">" + (idea.description || "") + "</p>"
+      + "<div class=\"idea-details\">"
+      + "<div class=\"detail-block\"><div class=\"detail-label\">What to bring</div><div class=\"detail-value\">" + (idea.whatToBring || "") + "</div></div>"
+      + "<div class=\"detail-block\"><div class=\"detail-label\">Why it works today</div><div class=\"detail-value\">" + (idea.whyItWorks || "") + "</div></div>"
+      + "</div>"
+      + "<div class=\"idea-footer\">"
+      + "<div class=\"idea-location\">&#128205; " + (idea.location || "") + (idea.source ? " - <em>" + idea.source + "</em>" : "") + "</div>"
+      + (idea.link ? "<a class=\"idea-link\" href=\"" + idea.link + "\" target=\"_blank\" rel=\"noopener\">details &rarr;</a>" : "")
+      + "</div></div>";
+  }).join("");
+  area.style.display = "block";
+  area.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+window.addEventListener("DOMContentLoaded", function() {
+  fetchWeather();
+  updateBudget(document.getElementById("budgetSlider"));
+});
+</script>
+</body>
+</html>
